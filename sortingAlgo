@@ -1,0 +1,203 @@
+#include "sortlib.h"
+template<typename T>
+//insertion sort
+ void insertionSort(T Array[], int size) {
+    for (int i = 1; i < size; ++i) {  //first element is sorted
+        int j = i - 1;
+        T key = Array[i];
+        while (j >= 0 && key < Array[j]) {
+            Array[i] = Array[j];
+            j -= 1;
+
+        }
+        Array[j + 1] = key;
+    }
+
+}
+template<typename T>
+//selection sort.
+void selectionSort(T array[], int size) {
+    for (int j = 0; j < size - 1; ++j) {
+        int minimum = j;               // select min = first element
+        for (int i = j + 1; i < size; ++i) {
+            if (array[minimum] > array[i]) {   // compare min with other elements in array
+                minimum = i;
+            }
+            if (minimum != j) {
+                swap(array[minimum], array[j]);    // swap
+            }
+
+        }
+    }
+
+
+}
+//____________________________________________________________________
+template<typename T>
+//Bubble sort
+void bubbleSort(T array[], int size) {
+    //nested loop
+    for (int j = 0; j < size; ++j) {     //count passes.
+        for (int i = 0; i < size - j - 1; ++i) {  //compare and swap. (i < size - j - 1) >> no compare sorted data.
+            if (array[i] > array[i + 1]) {
+                swap(array[i], array[i + 1]);
+            }
+        }
+    }
+}
+//________________________________________________________________________________________________
+template<typename T>
+//Shell sort
+void shellSort(T  Array[], int size) {
+    int increment = size / 2;
+    while (increment != 0) {
+        for (int i = increment; i < size; ++i) {
+            int j = i - increment;
+            T key = Array[i];
+            while (j >= 0 && key < Array[j]) {
+                Array[j + increment] = Array[j];
+                j -= increment;
+
+            }
+            Array[j + increment] = key;
+        }
+        increment = increment / 2;
+    }
+}
+template<typename T>
+//merge sort
+void merge(T array[], int left, int mid, int right) {
+    int size1 = mid - left;
+    int size2 = right - mid;
+    T subArray1[size1];
+    T subArray2[size2];
+    for (int i = 0; i < size1; ++i) {
+        subArray1[i] = array[left + i];
+    }
+    for (int i = 0; i < size2; ++i) {
+        subArray2[i] = array[mid + i];
+    }
+    int i = 0, j = 0, k = left;
+    while (i < size1 && j < size2) {
+        if (subArray1[i] < subArray2[j]) {
+            array[k++] = subArray1[i++];
+
+        } else {
+            array[k++] = subArray2[j++];
+
+        }
+
+    }
+    while (i < size1) {
+        array[k++] = subArray1[i++];
+
+    }
+    while (j < size2) {
+        array[k++] = subArray2[j++];
+
+    }
+
+}
+template<typename T>
+void mergeSort(T Array[], int left, int right) {
+    if (left >= right) {
+        return;
+    } else {
+        int middle = (left + right) / 2;
+        mergeSort(Array, left, middle - 1);
+        mergeSort(Array, middle + 1, right);
+        merge(Array, left, middle, right);
+    }
+}
+template<typename T>
+// Quick sort
+int partition(T array[], int begin, int end) {
+    int i = begin;
+    int j = end;
+    int pivotPos = i;
+    while (true) {
+        while (array[pivotPos] <= array[j] && j != pivotPos) {
+            j--;
+        }
+        if (j == pivotPos) {
+            break;
+        } else if (array[pivotPos] > array[j]) {
+            swap(array[pivotPos], array[j]);
+            pivotPos = j;
+        }
+        while (array[pivotPos] >= array[i] && i != pivotPos) {
+            i++;
+        }
+        if (i == pivotPos) {
+            break;
+        } else if (array[pivotPos] < array[i]) {
+            swap(array[pivotPos], array[i]);
+            pivotPos = i;
+        }
+    }
+    return pivotPos;
+
+}
+template<typename T>
+void quickSort(T array[], int begin, int end) {
+    if (begin < end) {
+        int pivot = partition(array, begin, end); // pivot sorted
+        quickSort(array, begin, pivot - 1);
+        quickSort(array, pivot + 1, end);
+    }
+
+}
+template<typename T>
+// Count sort.
+void countSort(T array[], int size) {
+    // Find the largest element of the array
+    int max = *max_element(array, array + size);
+    int output[max];
+    int count[max];
+
+    // Initialize count array with all zeros.
+    for (int i = 0; i <= max; ++i) {
+        count[i] = 0;
+    }
+
+    // Store the count of each element
+    for (int i = 0; i < size; i++) {
+        count[array[i]]++;
+    }
+
+    for (int i = 1; i <= max; i++) {
+        count[i] += count[i - 1];
+    }
+
+    for (int i = size - 1; i >= 0; i--) {
+        output[count[array[i]] - 1] = array[i];
+        count[array[i]]--;
+    }
+
+    for (int i = 0; i < size; i++) {
+        array[i] = output[i];
+    }
+}
+template<typename T>
+void print(T array[], int size) {
+
+    for (int i = 0; i < size; ++i) {
+        cout << array[i] << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+
+    int arr[] = {8, 7, 9, 6, 3};
+    string array [] = {"aya", "aa","hd", "g"};
+    //insertionSort(array, 4); //>> problem in intger
+    selectionSort(array, 4);
+    //bubbleSort(arr, 5);
+     //shellSort(arr, 5);
+     //quickSort(array, 0, 3);
+    //mergeSort(array,0,3); >>problem
+    //countSort(arr, 5);
+   // print(arr, 5);
+    print(array, 4);
+}
