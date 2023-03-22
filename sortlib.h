@@ -1,20 +1,35 @@
-//
-// Created by A plus on 3/18/2023.
-//
+// Data structure Assignment.
+// Created by Hadeer Abdelnasser on 3/18/2023.
+//Sorting Algorithms.
 
 #ifndef DATA_S_SORTING_H
 #include <iostream>
 #include <algorithm>
+#include <chrono>
 using namespace std;
+using namespace std::chrono;
 namespace sortlib
-{using namespace sortlib;
-    void insertionSort(int Array[], int size);
-    void selectionSort(int array[], int size);
-    void bubbleSort(int array[], int size);
-    void shellSort(int Array[], int size);
-    void mergeSort(int Array[], int left, int right);
-    void quickSort(int array[], int begin, int end);
-    void countSort(int array[], int size);
+{
+    template<typename T>
+    void insertionSort(T Array[], int size);
+
+    template<typename T>
+    void selectionSort(T array[], int size);
+
+    template<typename T>
+    void bubbleSort(T array[], int size);
+
+    template<typename T>
+    void shellSort(T Array[], int size);
+
+    template<typename T>
+    void mergeSort(T Array[], int left, int right);
+
+    template<typename T>
+    void quickSort(T array[], int begin, int end);
+
+    template<typename T>
+    void countSort(T array[], int size);
 
 }
 #define DATA_S_SORTING_H
