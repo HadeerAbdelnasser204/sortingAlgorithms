@@ -1,12 +1,13 @@
 #include "sortlib.h"
+
 template<typename T>
 //insertion sort
- void insertionSort(T Array[], int size) {
+void insertionSort(T Array[], int size) {
     for (int i = 1; i < size; ++i) {  //first element is sorted
         int j = i - 1;
         T key = Array[i];
         while (j >= 0 && key < Array[j]) {
-            Array[i] = Array[j];
+            Array[j + 1] = Array[j];
             j -= 1;
 
         }
@@ -14,6 +15,7 @@ template<typename T>
     }
 
 }
+
 template<typename T>
 //selection sort.
 void selectionSort(T array[], int size) {
@@ -32,6 +34,7 @@ void selectionSort(T array[], int size) {
 
 
 }
+
 //____________________________________________________________________
 template<typename T>
 //Bubble sort
@@ -45,10 +48,11 @@ void bubbleSort(T array[], int size) {
         }
     }
 }
+
 //________________________________________________________________________________________________
 template<typename T>
 //Shell sort
-void shellSort(T  Array[], int size) {
+void shellSort(T Array[], int size) {
     int increment = size / 2;
     while (increment != 0) {
         for (int i = increment; i < size; ++i) {
@@ -64,10 +68,11 @@ void shellSort(T  Array[], int size) {
         increment = increment / 2;
     }
 }
+
 template<typename T>
 //merge sort
 void merge(T array[], int left, int mid, int right) {
-    int size1 = mid - left;
+    int size1 = mid - left + 1;
     int size2 = right - mid;
     T subArray1[size1];
     T subArray2[size2];
@@ -75,11 +80,11 @@ void merge(T array[], int left, int mid, int right) {
         subArray1[i] = array[left + i];
     }
     for (int i = 0; i < size2; ++i) {
-        subArray2[i] = array[mid + i];
+        subArray2[i] = array[mid + i + 1];
     }
     int i = 0, j = 0, k = left;
     while (i < size1 && j < size2) {
-        if (subArray1[i] < subArray2[j]) {
+        if (subArray1[i] <= subArray2[j]) {
             array[k++] = subArray1[i++];
 
         } else {
@@ -98,6 +103,7 @@ void merge(T array[], int left, int mid, int right) {
     }
 
 }
+
 template<typename T>
 void mergeSort(T Array[], int left, int right) {
     if (left >= right) {
@@ -109,6 +115,7 @@ void mergeSort(T Array[], int left, int right) {
         merge(Array, left, middle, right);
     }
 }
+
 template<typename T>
 // Quick sort
 int partition(T array[], int begin, int end) {
@@ -138,6 +145,7 @@ int partition(T array[], int begin, int end) {
     return pivotPos;
 
 }
+
 template<typename T>
 void quickSort(T array[], int begin, int end) {
     if (begin < end) {
@@ -147,6 +155,7 @@ void quickSort(T array[], int begin, int end) {
     }
 
 }
+
 template<typename T>
 // Count sort.
 void countSort(T array[], int size) {
@@ -178,6 +187,15 @@ void countSort(T array[], int size) {
         array[i] = output[i];
     }
 }
+
+template<typename T>
+void randomArray(T array[], int size) {
+    srand(time(nullptr));
+    for (int i = 0; i < size; ++i) {
+        array[i] = (rand() % 500000) + 1;
+    }
+}
+
 template<typename T>
 void print(T array[], int size) {
 
@@ -188,16 +206,26 @@ void print(T array[], int size) {
 }
 
 int main() {
-
-    int arr[] = {8, 7, 9, 6, 3};
-    string array [] = {"aya", "aa","hd", "g"};
-    //insertionSort(array, 4); //>> problem in intger
-    selectionSort(array, 4);
-    //bubbleSort(arr, 5);
-     //shellSort(arr, 5);
-     //quickSort(array, 0, 3);
-    //mergeSort(array,0,3); >>problem
-    //countSort(arr, 5);
-   // print(arr, 5);
-    print(array, 4);
+    //float floatArr[] = {8.7, 7.4, 9.1, 6.3, 3.5};
+    //int arr[] = {8, 7, 9, 6, 3};
+    // insertionSort<float>(floatArr, 5);
+    //selectionSort<string>(array, 4);
+    //bubbleSort<int>(arr, 5);
+    //shellSort<int>(arr, 5);
+    // mergeSort<string>(array,0,3);
+    //countSort<int>(arr, 5);
+    // print(arr, 5);
+    int t = 7;
+    while (t--) {
+        int size;
+        cin >> size;
+        int array[size];
+        randomArray(array, size);
+        auto start = high_resolution_clock::now(); //time before sorting.
+        countSort<int>(array,  size);
+        auto end = high_resolution_clock::now();   //time after sorting.
+        auto duration = duration_cast<microseconds>(end - start);
+        cout << "Time taken by count sort on array of size  " << size << " is " << duration.count()
+             << " microseconds.\n";
+    }
 }
